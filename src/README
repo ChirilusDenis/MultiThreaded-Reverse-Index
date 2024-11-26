@@ -1,0 +1,17 @@
+        MPPER-REDUCER
+
+    This homework required us to make a multithreading application that does the reverse index of all words over a number of files.
+
+Working flow:
+    The main thread reads and opens the given file. After this, an array with all the open files are passed to the mapper threads, along with a pointer for the mapper threads to write their result at. The main thread siganls the mapper threads to start.
+
+    Each mapper thread will take a file index in a sychronized manner. For each file they take, the mapper threads read all the words in that file, removes all non-smallcase characters, and adds all the unique words in a list, along with the id of the files the word was found in.
+    After a thread is done with a file, it will take another file index until no more file are available.
+    
+    When all mapper threads are done, they will signal the main thread to count all the words found in all the files and the reducer threads will start their work.
+
+    The reducer threads take a list with all the words in some file and will "reserve" space in a shared word array. Each reducer thread will then move all the words in the curently processed list in the reserved space.
+    After all reducer threads finish merging all the separate word lists, the shared list is sorted alphabetically, and in case of equal words, sorted by the file id the word appears in.
+    After the sort is done, each thread takes a subset of the shared array and finds the index of the first word that starts with a certain letter. This is done for each letter of the alphabet.
+    Then, each thread combines all the equal words' file list into the first apparition of that word, each thread working only in its own subset.After all reducer threads are done with the previous task, each thread that doesn't process the end of the array "steals" the list of files from the first word processed by the next thread, only if the same word is found at the end of the first thread's subset.
+    At the end, each reducer thread "reserves" a letter that appears in at least one file and writes all the words that start with that letter into a file named <reserved letter>.txt.
