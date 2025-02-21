@@ -90,43 +90,6 @@ int preliminary_sort(const void *a, const void * b) {
     return -second->file_list[0] + first->file_list[0];
 }
 
-// void OETS(int start, int end, int N, word *list, pthread_barrier_t *barrier, pthread_mutex_t *mutex,
-//                              int *keep_sorting, int (*compare)(const void *, const void *))
-// {
-//     int start_is_odd = start % 2;
-//     word aux;
-
-//     for(int j = 0; *keep_sorting == 1; j++) {
-//         printf("Iteration %d\n", j);
-//         if(start == 0) *keep_sorting = 0;
-
-//         for(int i = start + start_is_odd; i < min(end, N-1); i+=2) {
-//             if(compare(list + i, list + i + 1) < 0) {
-//                 pthread_mutex_lock(mutex);
-//                 *keep_sorting = 1;
-//                 pthread_mutex_unlock(mutex);
-//                 aux = list[i];
-//                 list[i] = list[i+1];
-//                 list[i+1] = aux;
-//             }
-//         }
-//         pthread_barrier_wait(barrier);
-
-//         for(int i = start + 1 - start_is_odd; i < min(end, N-1); i+=2) {
-//             if(compare(list + i, list + i + 1) < 0) {
-//                 pthread_mutex_lock(mutex);
-//                 *keep_sorting = 1;
-//                 pthread_mutex_unlock(mutex);
-//                 aux = list[i];
-//                 list[i] = list[i+1];
-//                 list[i+1] = aux;
-//             }
-//         }
-
-//         pthread_barrier_wait(barrier);
-//     }
-//}
-
 void combine_dups(word *list, int start, int end, int N, pthread_barrier_t *barrier) {
 
     int last_word_chage = start;
